@@ -4,6 +4,15 @@ if (!defined('QA_VERSION')) {
    require_once QA_INCLUDE_DIR.'app/emails.php';
 }
 
+// for local test START
+/****************
+qa_opt('q2a-get-roundnumber-celebrate-body', "本文です。N番目の投稿です。おめでとうございます。");
+$obj = new q2a_get_roundnumber_celebrate_email_event();
+$event = 'a_post';
+$param['userid'] = 1589;
+$obj->process_event($event, 1589, 'developer', 0, $param);
+*************/
+// for local test START
 class q2a_get_roundnumber_celebrate_email_event
 {
 	function process_event ($event, $userid, $handle, $cookieid, $params)
@@ -24,19 +33,21 @@ class q2a_get_roundnumber_celebrate_email_event
 		foreach($posts as $post){
 			$postcount = $post["postcount"];
 		}
+// for debug START
+/***************
 $fp = fopen("/tmp/plugin04.log", "a+");
 $outs = "--------------------------\n";
 $outs .= "userid[" . $userid . "]\n";
 $outs .= "postcount:".$postcount."\n";
 fputs($fp, $outs);
 fclose($fp);
-		$postcount++;
+*****************/
+// for debug END
 		if (($postcount % $LIMIT) == 0) {
 			$user = $this->getUserInfo($userid);
 			$handle = $user[0]['handle'];
 			$email = $user[0]['email'];
 			$title = "キリ番の投稿おめでとうございます。";
-/*************
 			$bodyTemplate = qa_opt('q2a-get-roundnumber-celebrate-body');
 			$body = strtr($bodyTemplate, 
 				array(
@@ -45,8 +56,6 @@ fclose($fp);
 					'^count' => $postcount
 				)
 			);
-**************/
-$body = "本文です。$postcount番目の投稿です。おめでとうございます。";
 			$this->sendEmail($title, $body, $handle, $email);
 		}
 		return;
@@ -62,25 +71,28 @@ $body = "本文です。$postcount番目の投稿です。おめでとうござ�
 		$mail_params['toname'] = $toname;
 		$mail_params['toemail'] = $toemail;
 		$mail_params['html'] = false;
+// for debug START
+/*****************
 $fp = fopen("/tmp/plugin04.log", "a+");
-$outs = $mail_params['fromemail']."\n";
+$outs = "fromemail:".$mail_params['fromemail']."\n";
 fputs($fp, $outs);
-$outs = $mail_params['fromname'] . "\n";
+$outs = "fromname:".$mail_params['fromname'] . "\n";
 fputs($fp, $outs);
-$outs = $mail_params['subject'] . "\n";
+$outs = "subject:".$mail_params['subject'] . "\n";
 fputs($fp, $outs);
-$outs = $mail_params['body'] . "\n";
+$outs = "body:".$mail_params['body'] . "\n";
 fputs($fp, $outs);
-$outs = $mail_params['toname'] . "\n";
+$outs = "toname:".$mail_params['toname'] . "\n";
 fputs($fp, $outs);
-$outs = $mail_params['toemail'] . "\n";
+$outs = "toemail:".$mail_params['toemail'] . "\n";
 fputs($fp, $outs);
 fclose($fp);
-
+*****************/
+// for debug END
 		qa_send_email($mail_params);
 
-		//$mail_params['toemail'] = 'yuichi.shiga@gmail.com';
-		$mail_params['toemail'] = 'ryuta9.takeyama6@gmail.com';
+		$mail_params['toemail'] = 'yuichi.shiga@gmail.com';
+		//$mail_params['toemail'] = 'ryuta_takeyama@nexyzbb.ne.jp';
 		qa_send_email($mail_params);
 	}
 

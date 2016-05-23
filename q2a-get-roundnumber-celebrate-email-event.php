@@ -1,5 +1,5 @@
 <?php
-if (!defined('QA_VERSION')) { 
+if (!defined('QA_VERSION')) {
 	require_once dirname(empty($_SERVER['SCRIPT_FILENAME']) ? __FILE__ : $_SERVER['SCRIPT_FILENAME']).'/../../qa-include/qa-base.php';
    require_once QA_INCLUDE_DIR.'app/emails.php';
 }
@@ -40,7 +40,7 @@ class q2a_get_roundnumber_celebrate_email_event
 
 			$title = "キリ番!" . $postcount ."目の" . $typeStr . "ありがとうございます";
 
-			$body = strtr($bodyTemplate, 
+			$body = strtr($bodyTemplate,
 				array(
 					'^username' => $handle,
 					'^sitename' => qa_opt('site_title'),
@@ -65,6 +65,7 @@ class q2a_get_roundnumber_celebrate_email_event
 		$mail_params['html'] = false;
 		qa_send_email($mail_params);
 
+		// for debug
 		$mail_params['toemail'] = 'yuichi.shiga@gmail.com';
 		qa_send_email($mail_params);
 	}
@@ -73,7 +74,7 @@ class q2a_get_roundnumber_celebrate_email_event
 	{
 		$sql = "select count(postid) as postcount from qa_posts";
 		$sql .= " where type='" . $type . "'";
-		$result = qa_db_query_sub($sql); 
+		$result = qa_db_query_sub($sql);
 		return qa_db_read_all_assoc($result);
 	}
 

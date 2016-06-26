@@ -44,7 +44,7 @@ class q2a_get_roundnumber_celebrate_email_event
 				array(
 					'^username' => $handle,
 					'^sitename' => qa_opt('site_title'),
-					'^sitename' => qa_opt('site_url'),
+					'^siteurl' => qa_opt('site_url'),
 					'^count' => $postcount,
 					'^type' => $typeStr
 				)
